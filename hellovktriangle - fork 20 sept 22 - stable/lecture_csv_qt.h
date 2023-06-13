@@ -232,8 +232,7 @@ struct Pair lecture_csv(){
 
 
     for (int i = 0; i < lines2.size(); i++){
-        if (lines2[i][1]==" p ") {
-            //code construction parallelepide
+        if (lines2[i][1]==" p ") {//code construction parallelepide
             ListeDesSommets.clear();
             centre = {stof(lines2[i][2]),stof(lines2[i][3]),stof(lines2[i][4])};
             
@@ -255,7 +254,8 @@ struct Pair lecture_csv(){
                 QVector3D vec1 = centre-ListeDesSommets[0];
                 QVector3D vec2 = centre-ListeDesSommets[1];
                 vec3 = QVector3D::crossProduct(vec1,vec2); //maintenant qu'on les un simple cross product suffit
-                vec3 = vec3.QVector3D::normalized() * stof (lines2[i][14]); // et on finit par la normalisation. ce vecteur est unitaire.
+                vec3 = vec3.QVector3D::normalized() ; // et on finit par la normalisation. ce vecteur est unitaire.
+                vec3 = vec3* stof (lines2[i][14]); //multiplication of the unitary vector by the length written in the csv file.
 
             
 
@@ -272,10 +272,6 @@ struct Pair lecture_csv(){
             //changer la couleur des elements qaund ils sont clickés
             indiceDernierVertexDeLelementN = vertices.size()-1;
             indicesDesVertexDesElements.push_back({indicePremierVertexDeLelementN,indiceDernierVertexDeLelementN});
-
-
-
-            
 
             // on va maintenant créer la liste des indices
            int j = indiceSommetCourant;
@@ -300,7 +296,7 @@ struct Pair lecture_csv(){
            }
             indiceSommetCourant=indiceSommetCourant+8;
             //ajout des coordonnées du CG
-            listeCoordonneesCGs.push_back(centre+vec3*0.5f);
+            listeCoordonneesCGs.push_back(centre+vec3*0.5f); //vec3*0.5f : vec3 is a vector going from the center of a face to the enter. by taking its half (0.5f) we get the center of gravity.
             listeDesPoids.push_back(stof(lines2[i][16]));
         }
 
@@ -416,7 +412,7 @@ struct Pair lecture_csv(){
 
            //std::cout << vertices, indices;
         //ajout des coordonnées du CG
-        listeCoordonneesCGs.push_back(centre+vec3*0.5f);
+        listeCoordonneesCGs.push_back(centre+vec3*0.5f); //vec3*0.5f : vec3 is a vector going from the center of a face to the enter. by taking its half (0.5f) we get the center of gravity.
         listeDesPoids.push_back(stof(lines2[i][16]));
         }
 
@@ -425,20 +421,20 @@ struct Pair lecture_csv(){
     }
 
 
-    // roation de -90° des éléments autour de x
+    // -90° rotation of the elements around the x axis.
     QMatrix4x4 m;
-    m.rotate(-90, 1.0,0 ,0); // creeation d'une matrice de roation de -90° autour de x. pour corriger les pb de syst de coordonnées differents
+    m.rotate(-90, 1.0,0 ,0); // creation of a -90° rotation matrix around the x axis. pour corriger les pb de syst de coordonnées differents
 
     for (int i=verticesRepere.size(); i< vertices.size(); i++)    { // on commence à verticeReperes pour ne pas tourner le repére
         vertices[i].pos=m*vertices[i].pos;
     }
-    // fin du code pour la rotation de -90°
+    // end of the -90° rotation
 
     for (int i=0; i<listeCoordonneesCGs.size(); i++){
         float x=listeCoordonneesCGs[i][0],y=listeCoordonneesCGs[i][1],z=listeCoordonneesCGs[i][2];
-        verticesCG.push_back({{x,y,z},{0.0f,0.0f,1.0f},{0.8f,0.8f}});
-        verticesCG.push_back({{x,y-.1f,z-.1f},{0.0f,0.0f,1.0f},{0.8f,0.8f}});
-        verticesCG.push_back({{x,y+.1f,z-.1f},{0.0f,0.0f,1.0f},{0.8f,0.8f}});
+        verticesCG.push_back({{x,y,z},{0.0f,1.0f,1.0f},{0.8f,0.8f}});
+        verticesCG.push_back({{x,y-.1f,z-.1f},{0.0f,1.0f,1.0f},{0.8f,0.8f}});
+        verticesCG.push_back({{x,y+.1f,z-.1f},{0.0f,1.0f,1.0f},{0.8f,0.8f}});
 
         indicesCG.push_back(indiceSommetCourantCG);
         indicesCG.push_back(indiceSommetCourantCG+1);
@@ -446,7 +442,7 @@ struct Pair lecture_csv(){
         indiceSommetCourantCG=indiceSommetCourantCG+3;
     }
 
-    //plus de 2000 lignes de code, et sans celles qui suivent elles sont toutes inutiles.
+    //plus de 2000 lignes de code, et sans celles qui suivent elles sont toutes inutiles. calcul du CG
     float x=0;
     float y=0;
     float z=0;
@@ -459,30 +455,46 @@ struct Pair lecture_csv(){
     }
     x=x/poidsTotal; y=y/poidsTotal; z=z/poidsTotal;
     std::cout << "\n"<<poidsTotal<<" "<<x<<" "<<y<<" "<<z<<"\n";
-    // et enfin l'injection des vertices du CG
-    verticesCG.push_back({{x,y,z},{1.0f,0.0f,1.0f},{0.8f,0.2f}});
-    verticesCG.push_back({{x,y-.5f,z-.5f},{1.0f,0.0f,1.0f},{0.8f,0.2f}});
-    verticesCG.push_back({{x,y+.5f,z-.5f},{1.0f,0.0f,1.0f},{0.8f,0.2f}});
 
+    // et enfin l'injection des vertices du CG global
+    verticesCG.push_back({{x,y,z},{1.0f,1.0f,1.0f},{0.8f,0.2f}});
+    verticesCG.push_back({{x-.5f,y-.5f,z-.5f},{1.0f,0.0f,1.0f},{0.8f,0.2f}});
+    verticesCG.push_back({{x-.5f,y+.5f,z-.5f},{1.0f,0.0f,1.0f},{0.8f,0.2f}});
+    verticesCG.push_back({{x+.5f,y+.5f,z-.5f},{1.0f,0.0f,1.0f},{0.8f,0.2f}});
+    verticesCG.push_back({{x+.5f,y-.5f,z-.5f},{1.0f,0.0f,1.0f},{0.8f,0.2f}});
+
+    //rotation de -90° pour les vertices du GG
+    for(int i=0; i<verticesCG.size(); i++){
+        verticesCG[i].pos = m*verticesCG[i].pos;
+    }
+    //fin de la rotation de -90° pour les vertices du GG
+
+    //construction de la pyramide du CG central
     indicesCG.push_back(indiceSommetCourantCG);
     indicesCG.push_back(indiceSommetCourantCG+1);
     indicesCG.push_back(indiceSommetCourantCG+2);
-    indiceSommetCourantCG=indiceSommetCourantCG+3;
-    
-    std::vector<Vertex> verticesTemp = vertices ;
-    std::vector<uint32_t> indicesTemp = indices;
-    //for (int i=0; i<indicesTemp.size(); i++) indicesTemp[i]=indicesTemp[i]+indiceSommetCourantCG; // pour prendre en compte les indices du CG ?
 
-    vertices.clear();
-    indices.clear();
+    indicesCG.push_back(indiceSommetCourantCG);
+    indicesCG.push_back(indiceSommetCourantCG+2);
+    indicesCG.push_back(indiceSommetCourantCG+3);
 
-    //for (int i=0; i<verticesCG.size(); i++) vertices.push_back(verticesCG[i]);
-    //for (int i=0; i<indicesCG.size(); i++) indices.push_back(indicesCG[i]);
+    indicesCG.push_back(indiceSommetCourantCG);
+    indicesCG.push_back(indiceSommetCourantCG+3);
+    indicesCG.push_back(indiceSommetCourantCG+4);
 
-    for (int i=0; i<verticesTemp.size(); i++) vertices.push_back(verticesTemp[i]);
-    for (int i=0; i<indicesTemp.size(); i++) indices.push_back(indicesTemp[i]);
+    indicesCG.push_back(indiceSommetCourantCG);
+    indicesCG.push_back(indiceSommetCourantCG+4);
+    indicesCG.push_back(indiceSommetCourantCG+1);
 
-    
+
+    //injection de la grille
+    for (int i=0; i<indicesOfTheGrid.size(); i++) indices.push_back(vertices.size()+indicesOfTheGrid[i]);
+    for (int i=0; i<verticesOfTheGrid.size(); i++) vertices.push_back(verticesOfTheGrid[i]);
+
+    //injection des CG locaux et du CG global
+    for (int i=0; i<indicesCG.size(); i++) indices.push_back(vertices.size()+indicesCG[i]);
+    for (int i=0; i<verticesCG.size(); i++) vertices.push_back(verticesCG[i]);
+
     // pour le fichier de debug. réactiver le code si nécessaire
     /*ofstream myfile2;
     myfile2.open("voulu_c++.txt");
@@ -492,9 +504,5 @@ struct Pair lecture_csv(){
     myfile2 << "\n";}
     myfile2.close();*/
 
-
-    for (int i=0; i<indicesOfTheGrid.size(); i++) indices.push_back(vertices.size()+indicesOfTheGrid[i]);
-    for (int i=0; i<verticesOfTheGrid.size(); i++) vertices.push_back(verticesOfTheGrid[i]);
     return {vertices, indices, indicesDesVertexDesElements};
 }
-
