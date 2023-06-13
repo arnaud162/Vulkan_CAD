@@ -248,6 +248,7 @@ Makefile: ../hellovktriangle\ -\ fork\ 20\ sept\ 22\ -\ stable/hellovulkantriang
 		C:/Qt/5.15.2/mingw81_64/mkspecs/features/qt_config.prf \
 		C:/Qt/5.15.2/mingw81_64/mkspecs/win32-g++/qmake.conf \
 		C:/Qt/5.15.2/mingw81_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		C:/Qt/5.15.2/mingw81_64/mkspecs/features/exclusive_builds.prf \
 		C:/Qt/5.15.2/mingw81_64/mkspecs/features/toolchain.prf \
 		C:/Qt/5.15.2/mingw81_64/mkspecs/features/default_pre.prf \
@@ -277,7 +278,6 @@ Makefile: ../hellovktriangle\ -\ fork\ 20\ sept\ 22\ -\ stable/hellovulkantriang
 		C:/Qt/5.15.2/mingw81_64/lib/Qt5Concurrent.prl \
 		C:/Qt/5.15.2/mingw81_64/lib/Qt5Core.prl \
 		C:/Qt/5.15.2/mingw81_64/lib/qtmain.prl \
-		.qmake.stash \
 		C:/Qt/5.15.2/mingw81_64/mkspecs/features/build_pass.prf \
 		../hellovktriangle\ -\ fork\ 20\ sept\ 22\ -\ stable/hellovulkantriangle.qrc
 	$(QMAKE) -o Makefile "..\hellovktriangle - fork 20 sept 22 - stable\hellovulkantriangle_v2.pro" -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
@@ -459,6 +459,7 @@ C:/Qt/5.15.2/mingw81_64/mkspecs/features/qt_functions.prf:
 C:/Qt/5.15.2/mingw81_64/mkspecs/features/qt_config.prf:
 C:/Qt/5.15.2/mingw81_64/mkspecs/win32-g++/qmake.conf:
 C:/Qt/5.15.2/mingw81_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 C:/Qt/5.15.2/mingw81_64/mkspecs/features/exclusive_builds.prf:
 C:/Qt/5.15.2/mingw81_64/mkspecs/features/toolchain.prf:
 C:/Qt/5.15.2/mingw81_64/mkspecs/features/default_pre.prf:
@@ -488,7 +489,6 @@ C:/Qt/5.15.2/mingw81_64/lib/Qt5Gui.prl:
 C:/Qt/5.15.2/mingw81_64/lib/Qt5Concurrent.prl:
 C:/Qt/5.15.2/mingw81_64/lib/Qt5Core.prl:
 C:/Qt/5.15.2/mingw81_64/lib/qtmain.prl:
-.qmake.stash:
 C:/Qt/5.15.2/mingw81_64/mkspecs/features/build_pass.prf:
 ../hellovktriangle\ -\ fork\ 20\ sept\ 22\ -\ stable/hellovulkantriangle.qrc:
 qmake: FORCE
