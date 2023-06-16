@@ -17,5 +17,7 @@ Make sure that voulu2.csv and repere.obj are present in the same folder than the
 
 You can watch a demonstration here https://www.youtube.com/watch?v=pFXsAUQH1YM
 
+More documentation available here https://docs.google.com/document/d/1FwHjqDL0NGQofEYKDeUpHzyHBBt_TJxYg6BWp7oIHns/edit
+
 # Installation
 Just install Qt Creator and the Vulkan sdk and you should be able to build and run.
