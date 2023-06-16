@@ -323,26 +323,26 @@ struct Pair lecture_csv(){
             QVector3D veccyl4  = (pt4-pt1)*(1/increment);
 
             
-            std::vector<QVector3D> listeVecteursRectangleInscrit;
+            std::vector<QVector3D> listeOfTheVectorsInTheRectangle;
 
-            listeVecteursRectangleInscrit.push_back(pt1);
+            listeOfTheVectorsInTheRectangle.push_back(pt1);
             for(int j=0; j<increment; j++){
-               listeVecteursRectangleInscrit.push_back(listeVecteursRectangleInscrit.back()-veccyl1);
+               listeOfTheVectorsInTheRectangle.push_back(listeOfTheVectorsInTheRectangle.back()-veccyl1);
             }
 
-            listeVecteursRectangleInscrit.push_back(pt2);
+            listeOfTheVectorsInTheRectangle.push_back(pt2);
             for(int j=0; j<increment; j++){
-                listeVecteursRectangleInscrit.push_back(listeVecteursRectangleInscrit.back()-veccyl2);
+                listeOfTheVectorsInTheRectangle.push_back(listeOfTheVectorsInTheRectangle.back()-veccyl2);
             }
 
-            listeVecteursRectangleInscrit.push_back(pt3);
+            listeOfTheVectorsInTheRectangle.push_back(pt3);
             for(int j=0; j<increment; j++){
-                listeVecteursRectangleInscrit.push_back(listeVecteursRectangleInscrit.back()-veccyl3);
+                listeOfTheVectorsInTheRectangle.push_back(listeOfTheVectorsInTheRectangle.back()-veccyl3);
             }
 
-            listeVecteursRectangleInscrit.push_back(pt4);
+            listeOfTheVectorsInTheRectangle.push_back(pt4);
             for(int j=0; j<increment; j++){
-                listeVecteursRectangleInscrit.push_back(listeVecteursRectangleInscrit.back()-veccyl4);
+                listeOfTheVectorsInTheRectangle.push_back(listeOfTheVectorsInTheRectangle.back()-veccyl4);
             }
 
             ListeDesSommets.clear();
@@ -350,8 +350,8 @@ struct Pair lecture_csv(){
             // Ecriture du centre
             ListeDesSommets.push_back(centre);
             
-            for (int j=0; j<listeVecteursRectangleInscrit.size(); j++){
-                QVector3D vec = centre-listeVecteursRectangleInscrit[j];
+            for (int j=0; j<listeOfTheVectorsInTheRectangle.size(); j++){
+                QVector3D vec = centre-listeOfTheVectorsInTheRectangle[j];
                 vec=vec.QVector3D::normalized()*r; //on est sur d'avoir le rayon
                 ListeDesSommets.push_back(centre + vec);
             }

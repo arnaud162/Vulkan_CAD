@@ -1,0 +1,8 @@
+transparence ou ajout d'un bouton pour n'afficher que les CG locaux
+faire briller la pyramide
+lumière de phong
+contrôles deplacement rotation redimensionnement, comme blender
+ajout de la possibilité de zoomer, de changer le centre de la scène
+implémentation du CTRL Z
+Gestion des cas où il manque le fichier de config ou le repère
+Faciliter l'entrée des rectangles et cylindres en entrant moins de données
