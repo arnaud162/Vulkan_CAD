@@ -224,10 +224,10 @@ struct Pair lecture_csv(){
     //int indiceSommetCourant =  0;
 
     QVector3D vec3; // le vecteur normal, obtenu par produit vectoriel
-    std::vector<QVector3D> listeCoordonneesCGs;
+    std::vector<QVector3D> listOfCGsCoordinates;
     std::vector<Vertex> verticesCG ;
     std::vector<uint32_t> indicesCG;
-    std::vector<uint32_t> listeDesPoids;
+    std::vector<uint32_t> listOfWeights;
     int indiceSommetCourantCG;
 
 
@@ -296,8 +296,8 @@ struct Pair lecture_csv(){
            }
             indiceSommetCourant=indiceSommetCourant+8;
             //ajout des coordonnées du CG
-            listeCoordonneesCGs.push_back(centre+vec3*0.5f); //vec3*0.5f : vec3 is a vector going from the center of a face to the enter. by taking its half (0.5f) we get the center of gravity.
-            listeDesPoids.push_back(stof(lines2[i][16]));
+            listOfCGsCoordinates.push_back(centre+vec3*0.5f); //vec3*0.5f : vec3 is a vector going from the center of a face to the enter. by taking its half (0.5f) we get the center of gravity.
+            listOfWeights.push_back(stof(lines2[i][16]));
         }
 
         else if (lines2[i][1]==" c "){
@@ -412,8 +412,8 @@ struct Pair lecture_csv(){
 
            //std::cout << vertices, indices;
         //ajout des coordonnées du CG
-        listeCoordonneesCGs.push_back(centre+vec3*0.5f); //vec3*0.5f : vec3 is a vector going from the center of a face to the enter. by taking its half (0.5f) we get the center of gravity.
-        listeDesPoids.push_back(stof(lines2[i][16]));
+        listOfCGsCoordinates.push_back(centre+vec3*0.5f); //vec3*0.5f : vec3 is a vector going from the center of a face to the enter. by taking its half (0.5f) we get the center of gravity.
+        listOfWeights.push_back(stof(lines2[i][16]));
         }
 
         else indicesDesVertexDesElements.push_back({-1,-1}); //-1 -1 pour indiquer qu'il s'agit d'une ligne non valide à ne pas prendre en compte
@@ -430,8 +430,8 @@ struct Pair lecture_csv(){
     }
     // end of the -90° rotation
 
-    for (int i=0; i<listeCoordonneesCGs.size(); i++){
-        float x=listeCoordonneesCGs[i][0],y=listeCoordonneesCGs[i][1],z=listeCoordonneesCGs[i][2];
+    for (int i=0; i<listOfCGsCoordinates.size(); i++){
+        float x=listOfCGsCoordinates[i][0],y=listOfCGsCoordinates[i][1],z=listOfCGsCoordinates[i][2];
         verticesCG.push_back({{x,y,z},{0.0f,1.0f,1.0f},{0.8f,0.8f}});
         verticesCG.push_back({{x,y-.1f,z-.1f},{0.0f,1.0f,1.0f},{0.8f,0.8f}});
         verticesCG.push_back({{x,y+.1f,z-.1f},{0.0f,1.0f,1.0f},{0.8f,0.8f}});
@@ -446,15 +446,15 @@ struct Pair lecture_csv(){
     float x=0;
     float y=0;
     float z=0;
-    float poidsTotal=0;
-    for(int i=0; i<listeCoordonneesCGs.size();i++){
-        x=x+listeCoordonneesCGs[i][0]*listeDesPoids[i];
-        y=y+listeCoordonneesCGs[i][1]*listeDesPoids[i];
-        z=z+listeCoordonneesCGs[i][2]*listeDesPoids[i];
-        poidsTotal=poidsTotal+listeDesPoids[i];
+    float totalWeight=0;
+    for(int i=0; i<listOfCGsCoordinates.size();i++){
+        x=x+listOfCGsCoordinates[i][0]*listOfWeights[i];
+        y=y+listOfCGsCoordinates[i][1]*listOfWeights[i];
+        z=z+listOfCGsCoordinates[i][2]*listOfWeights[i];
+        totalWeight=totalWeight+listOfWeights[i];
     }
-    x=x/poidsTotal; y=y/poidsTotal; z=z/poidsTotal;
-    std::cout << "\n"<<poidsTotal<<" "<<x<<" "<<y<<" "<<z<<"\n";
+    x=x/totalWeight; y=y/totalWeight; z=z/totalWeight;
+    std::cout << "\n"<<totalWeight<<" "<<x<<" "<<y<<" "<<z<<"\n";
 
     // et enfin l'injection des vertices du CG global
     verticesCG.push_back({{x,y,z},{1.0f,1.0f,1.0f},{0.8f,0.2f}});
